@@ -2,7 +2,10 @@ import React from 'react';
 import { TextField } from '@fluentui/react';
 import './List.css';
 
-const emailTextField = () => {
+const emailTextField = ({email}) => {
+
+    const address = email.split('@')[1]
+
     return (
         <div style={{display:'flex', alignItems:'center'}}>
            <TextField
@@ -10,7 +13,7 @@ const emailTextField = () => {
             borderless={false}
            />
            <span style={{marginLeft: '2px'}}>
-            {`  @gmail.com`} 
+            {`@${address}`} 
            </span>
         </div>
     )

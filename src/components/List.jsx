@@ -1,45 +1,30 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { DetailsList, TextField } from '@fluentui/react'
+import { listUsers } from '../redux/actions/userActions'
+
 import EmailTextField from './emailTextField';
 import PwdTextField from './pwdTextField';
 
 import './List.css'
 
 const List = ({location}) => {
+
+    const dispatch = useDispatch();
+    const userList = useSelector(state => state.userList)
+
+    const { users } = userList;
     
     const searchParams = new URLSearchParams(location.search);
     const filterParam = searchParams.get('email');
-    console.log(filterParam,'check')
+    console.log(filterParam,'check filter param from List component')
 
-    const userData = [
-        {
-            name: 'Abhijeet Mukherjee',
-            email: 'abhijeet@example.com',
-            password: '123'
-        },
-        {
-            name: 'John Doe',
-            email: 'john@example.com',
-            password: '123'
-        },
-        {
-            name: 'Jane Doe',
-            email: 'jane@example.com',
-            password: '123'
-        }
-];
+    useEffect(() => {
+        dispatch(listUsers(filterParam));
+        // eslint-disable-next-line
+    },[dispatch, filterParam])
+
     const columns = [
-        // {
-        //   key: 'column1',
-        //   name: 'File Type',
-        //   ariaLabel: 'Column operations for File type, Press to sort on File type',
-        //   fieldName: 'name',
-        //   minWidth: 16,
-        //   maxWidth: 16,
-        //   onRender: (item) => {
-        //     return <div>Hi there</div>;
-        //   },
-        // },
         {
             key: 'column1',
             name: 'Display name',
@@ -66,20 +51,11 @@ const List = ({location}) => {
             maxWidth: 350,
             isRowHeader: true,
             isResizable: true,
-            // isSorted: true,
-            // isSortedDescending: false,
-            // sortAscendingAriaLabel: 'Sorted A to Z',
-            // sortDescendingAriaLabel: 'Sorted Z to A',
-            //onColumnClick: this._onColumnClick,
             data: 'string',
             isPadded: true,
-            onRender: function(){
+            onRender: function(item){
                 return (
-                    // <TextField 
-                    //     className={'textfield-width'} 
-                    //     borderless={false}
-                    //     />
-                    <EmailTextField />
+                    <EmailTextField email={item.email}/>
                 )
             }
           },{
@@ -105,7 +81,7 @@ const List = ({location}) => {
 
     return (
         <DetailsList 
-            items={userData}
+            items={users}
             columns={columns}
         />
     )
