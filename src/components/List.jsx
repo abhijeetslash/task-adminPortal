@@ -5,7 +5,12 @@ import PwdTextField from './pwdTextField';
 
 import './List.css'
 
-const List = () => {
+const List = ({location}) => {
+    
+    const searchParams = new URLSearchParams(location.search);
+    const filterParam = searchParams.get('email');
+    console.log(filterParam,'check')
+
     const userData = [
         {
             name: 'Abhijeet Mukherjee',
